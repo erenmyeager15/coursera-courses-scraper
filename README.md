@@ -35,10 +35,13 @@ This build follows a probe-first workflow. Coursera exposes enough public page d
   "courseUrl": "https://www.coursera.org/learn/python-for-applied-data-science-ai",
   "courseSlug": "learn/python-for-applied-data-science-ai",
   "productType": "COURSE",
+  "productTypeLabel": "Course",
   "partners": ["IBM"],
   "partnerNames": "IBM",
   "difficulty": "BEGINNER",
+  "difficultyLabel": "Beginner",
   "duration": "ONE_TO_THREE_MONTHS",
+  "durationLabel": "1-3 months",
   "skills": ["Python Programming", "NumPy", "Data Analysis"],
   "skillNames": "Python Programming, NumPy, Data Analysis",
   "rating": 4.620138506696019,
@@ -77,9 +80,12 @@ Charges are made only after a real record is saved to the Apify Dataset.
 | `title` | Course or program title. |
 | `courseUrl` | Full Coursera URL. |
 | `productType` | Course, specialization, professional certificate, and similar product type. |
+| `productTypeLabel` | Human-friendly product type for table views. |
 | `partners` | University, company, or institution partners. |
 | `difficulty` | Coursera difficulty label when available. |
+| `difficultyLabel` | Human-friendly difficulty label for table views. |
 | `duration` | Coursera duration bucket when available. |
+| `durationLabel` | Human-friendly duration label for table views. |
 | `skills` | Public skill tags when available. |
 | `rating` | Average rating. |
 | `reviewCount` | Number of ratings or reviews exposed in search data. |

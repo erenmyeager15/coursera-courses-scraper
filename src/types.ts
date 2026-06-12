@@ -49,10 +49,13 @@ export interface CourseRecord {
     courseUrl: string | null;
     courseSlug: string | null;
     productType: string | null;
+    productTypeLabel: string | null;
     partners: string[];
     partnerNames: string | null;
     difficulty: string | null;
+    difficultyLabel: string | null;
     duration: string | null;
+    durationLabel: string | null;
     skills: string[];
     skillNames: string | null;
     rating: number | null;

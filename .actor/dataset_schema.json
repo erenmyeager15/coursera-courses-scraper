@@ -45,6 +45,12 @@
         "description": "Coursera product type.",
         "example": "COURSE"
       },
+      "productTypeLabel": {
+        "type": ["string", "null"],
+        "title": "Product Type Label",
+        "description": "Human-friendly product type for table views.",
+        "example": "Course"
+      },
       "partners": {
         "type": "array",
         "title": "Partners",
@@ -66,11 +72,23 @@
         "description": "Coursera difficulty level.",
         "example": "BEGINNER"
       },
+      "difficultyLabel": {
+        "type": ["string", "null"],
+        "title": "Difficulty Label",
+        "description": "Human-friendly difficulty label for table views.",
+        "example": "Beginner"
+      },
       "duration": {
         "type": ["string", "null"],
         "title": "Duration",
         "description": "Coursera duration bucket.",
         "example": "ONE_TO_THREE_MONTHS"
+      },
+      "durationLabel": {
+        "type": ["string", "null"],
+        "title": "Duration Label",
+        "description": "Human-friendly duration label for table views.",
+        "example": "1-3 months"
       },
       "skills": {
         "type": "array",
@@ -137,33 +155,26 @@
       "description": "Main Coursera course records for browsing and export.",
       "transformation": {
         "fields": [
-          "source",
-          "query",
+          "imageUrl",
           "title",
           "partnerNames",
-          "productType",
-          "difficulty",
-          "duration",
+          "productTypeLabel",
+          "difficultyLabel",
+          "durationLabel",
           "rating",
           "reviewCount",
           "isFree",
           "isPartOfCourseraPlus",
-          "skillNames",
           "courseUrl",
-          "imageUrl",
           "scrapedAt"
         ]
       },
       "display": {
         "component": "table",
         "properties": {
-          "source": {
-            "label": "Source",
-            "format": "text"
-          },
-          "query": {
-            "label": "Query",
-            "format": "text"
+          "imageUrl": {
+            "label": "Image",
+            "format": "image"
           },
           "title": {
             "label": "Title",
@@ -173,15 +184,15 @@
             "label": "Partners",
             "format": "text"
           },
-          "productType": {
+          "productTypeLabel": {
             "label": "Type",
             "format": "text"
           },
-          "difficulty": {
+          "difficultyLabel": {
             "label": "Difficulty",
             "format": "text"
           },
-          "duration": {
+          "durationLabel": {
             "label": "Duration",
             "format": "text"
           },
@@ -206,12 +217,8 @@
             "format": "text"
           },
           "courseUrl": {
-            "label": "Course URL",
+            "label": "Course",
             "format": "link"
-          },
-          "imageUrl": {
-            "label": "Image",
-            "format": "image"
           },
           "scrapedAt": {
             "label": "Scraped At",
@@ -232,8 +239,11 @@
           "partners",
           "skills",
           "productType",
+          "productTypeLabel",
           "difficulty",
+          "difficultyLabel",
           "duration",
+          "durationLabel",
           "rating",
           "reviewCount",
           "isFree",

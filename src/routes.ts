@@ -227,10 +227,13 @@ function toCourseRecord(hit: CourseraProductHit, query: string, page: number, in
         courseUrl,
         courseSlug: relativeUrl ? relativeUrl.replace(/^\//, '') : null,
         productType: hit.productType ?? null,
+        productTypeLabel: labelFromEnum(hit.productType),
         partners: hit.partners ?? [],
         partnerNames: joinValues(hit.partners),
         difficulty: hit.difficulty ?? null,
+        difficultyLabel: labelFromEnum(hit.difficulty),
         duration: hit.duration ?? null,
+        durationLabel: durationLabel(hit.duration),
         skills,
         skillNames: joinValues(skills),
         rating: finiteNumberOrNull(hit.rating),
@@ -307,6 +310,32 @@ function integerOrNull(value: unknown): number | null {
 function joinValues(values: string[] | undefined): string | null {
     if (!values || values.length === 0) return null;
     return values.join(', ');
+}
+
+function labelFromEnum(value: string | undefined): string | null {
+    const cleaned = cleanText(value);
+    if (!cleaned) return null;
+    return cleaned
+        .toLowerCase()
+        .split('_')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+}
+
+function durationLabel(value: string | undefined): string | null {
+    const labels: Record<string, string> = {
+        LESS_THAN_TWO_HOURS: '<2 hours',
+        ONE_TO_TWO_HOURS: '1-2 hours',
+        TWO_TO_FOUR_HOURS: '2-4 hours',
+        ONE_TO_FOUR_WEEKS: '1-4 weeks',
+        ONE_TO_THREE_MONTHS: '1-3 months',
+        THREE_TO_SIX_MONTHS: '3-6 months',
+        SIX_TO_TWELVE_MONTHS: '6-12 months',
+        ONE_TO_FOUR_YEARS: '1-4 years',
+    };
+
+    if (!value) return null;
+    return labels[value] ?? labelFromEnum(value);
 }
 
 function isPlainObject(value: unknown): value is Record<string, unknown> {
