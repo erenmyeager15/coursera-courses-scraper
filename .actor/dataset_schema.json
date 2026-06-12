@@ -111,6 +111,12 @@
         "description": "Average Coursera rating.",
         "example": 4.620138506696019
       },
+      "ratingRounded": {
+        "type": ["number", "null"],
+        "title": "Rating Rounded",
+        "description": "Average Coursera rating rounded for compact table views.",
+        "example": 4.62
+      },
       "reviewCount": {
         "type": ["integer", "null"],
         "title": "Review Count",
@@ -161,12 +167,9 @@
           "productTypeLabel",
           "difficultyLabel",
           "durationLabel",
-          "rating",
+          "ratingRounded",
           "reviewCount",
-          "isFree",
-          "isPartOfCourseraPlus",
-          "courseUrl",
-          "scrapedAt"
+          "isPartOfCourseraPlus"
         ]
       },
       "display": {
@@ -196,7 +199,7 @@
             "label": "Duration",
             "format": "text"
           },
-          "rating": {
+          "ratingRounded": {
             "label": "Rating",
             "format": "number"
           },
@@ -204,25 +207,9 @@
             "label": "Reviews",
             "format": "number"
           },
-          "isFree": {
-            "label": "Free",
-            "format": "boolean"
-          },
           "isPartOfCourseraPlus": {
-            "label": "Coursera Plus",
+            "label": "Plus",
             "format": "boolean"
-          },
-          "skillNames": {
-            "label": "Skills",
-            "format": "text"
-          },
-          "courseUrl": {
-            "label": "Course",
-            "format": "link"
-          },
-          "scrapedAt": {
-            "label": "Scraped At",
-            "format": "date"
           }
         }
       }
@@ -245,6 +232,7 @@
           "duration",
           "durationLabel",
           "rating",
+          "ratingRounded",
           "reviewCount",
           "isFree",
           "isPartOfCourseraPlus",

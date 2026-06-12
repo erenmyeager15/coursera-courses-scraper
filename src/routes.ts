@@ -237,6 +237,7 @@ function toCourseRecord(hit: CourseraProductHit, query: string, page: number, in
         skills,
         skillNames: joinValues(skills),
         rating: finiteNumberOrNull(hit.rating),
+        ratingRounded: roundedNumberOrNull(hit.rating, 2),
         reviewCount: integerOrNull(hit.ratings),
         isFree: hit.free ?? null,
         isPartOfCourseraPlus: hit.plus ?? null,
@@ -305,6 +306,13 @@ function finiteNumberOrNull(value: unknown): number | null {
 function integerOrNull(value: unknown): number | null {
     const number = numberValue(value);
     return number === undefined ? null : Math.trunc(number);
+}
+
+function roundedNumberOrNull(value: unknown, decimals: number): number | null {
+    const number = numberValue(value);
+    if (number === undefined) return null;
+    const factor = 10 ** decimals;
+    return Math.round(number * factor) / factor;
 }
 
 function joinValues(values: string[] | undefined): string | null {

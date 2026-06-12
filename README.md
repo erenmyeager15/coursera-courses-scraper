@@ -45,6 +45,7 @@ This build follows a probe-first workflow. Coursera exposes enough public page d
   "skills": ["Python Programming", "NumPy", "Data Analysis"],
   "skillNames": "Python Programming, NumPy, Data Analysis",
   "rating": 4.620138506696019,
+  "ratingRounded": 4.62,
   "reviewCount": 43608,
   "isFree": false,
   "isPartOfCourseraPlus": true,
@@ -88,6 +89,7 @@ Charges are made only after a real record is saved to the Apify Dataset.
 | `durationLabel` | Human-friendly duration label for table views. |
 | `skills` | Public skill tags when available. |
 | `rating` | Average rating. |
+| `ratingRounded` | Rounded rating for compact table views. |
 | `reviewCount` | Number of ratings or reviews exposed in search data. |
 | `isFree` | Coursera free flag when present. |
 | `isPartOfCourseraPlus` | Coursera Plus flag when present. |

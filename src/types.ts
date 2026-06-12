@@ -59,6 +59,7 @@ export interface CourseRecord {
     skills: string[];
     skillNames: string | null;
     rating: number | null;
+    ratingRounded: number | null;
     reviewCount: number | null;
     isFree: boolean | null;
     isPartOfCourseraPlus: boolean | null;
