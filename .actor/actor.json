@@ -1,0 +1,28 @@
+{
+  "actorSpecification": 1,
+  "name": "coursera-courses-scraper",
+  "title": "Coursera Courses Scraper - Course Catalog Data",
+  "description": "Scrape Coursera course catalog search results with titles, partners, ratings, skills, difficulty, duration, product type, URLs, and images.",
+  "version": "1.0",
+  "buildTag": "latest",
+  "meta": {
+    "templateId": "ts-start"
+  },
+  "dockerfile": "./Dockerfile",
+  "input": "./../INPUT_SCHEMA.json",
+  "readme": "./../README.md",
+  "memoryMbytes": 1024,
+  "timeoutSecs": 14400,
+  "categories": ["RESEARCH", "BUSINESS", "DEVELOPER_TOOLS"],
+  "pricingInfo": {
+    "pricingModel": "PAY_PER_EVENT",
+    "events": [
+      {
+        "eventName": "course-scraped",
+        "eventTitle": "Course scraped",
+        "eventDescription": "Charged for each unique Coursera course record saved to the dataset.",
+        "eventPriceUsd": 0.002
+      }
+    ]
+  }
+}

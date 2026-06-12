@@ -1,0 +1,6 @@
+{
+  "queries": ["python"],
+  "maxResults": 10,
+  "productTypes": ["COURSE"],
+  "includeSkills": true
+}

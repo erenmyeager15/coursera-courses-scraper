@@ -1,0 +1,80 @@
+{
+  "title": "Coursera Courses Scraper Input",
+  "description": "Search Coursera's public course catalog and export clean course records.",
+  "type": "object",
+  "schemaVersion": 1,
+  "properties": {
+    "queries": {
+      "title": "Search keywords",
+      "type": "array",
+      "description": "One or more Coursera search queries.",
+      "editor": "stringList",
+      "prefill": ["python", "data science"],
+      "items": {
+        "type": "string"
+      }
+    },
+    "maxResults": {
+      "title": "Maximum results",
+      "type": "integer",
+      "description": "Maximum number of unique courses to save across all queries.",
+      "minimum": 1,
+      "maximum": 500,
+      "default": 100
+    },
+    "productTypes": {
+      "title": "Product types",
+      "type": "array",
+      "description": "Optional product type filter.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": [
+          "COURSE",
+          "SPECIALIZATION",
+          "PROFESSIONAL_CERTIFICATE",
+          "GUIDED_PROJECT",
+          "PROJECT",
+          "DEGREE",
+          "MASTERTRACK"
+        ],
+        "enumTitles": [
+          "Course",
+          "Specialization",
+          "Professional Certificate",
+          "Guided Project",
+          "Project",
+          "Degree",
+          "MasterTrack"
+        ]
+      }
+    },
+    "difficulties": {
+      "title": "Difficulty levels",
+      "type": "array",
+      "description": "Optional difficulty filter.",
+      "editor": "select",
+      "items": {
+        "type": "string",
+        "enum": ["BEGINNER", "INTERMEDIATE", "ADVANCED", "MIXED"],
+        "enumTitles": ["Beginner", "Intermediate", "Advanced", "Mixed"]
+      }
+    },
+    "includeSkills": {
+      "title": "Include skills",
+      "type": "boolean",
+      "description": "Include Coursera skill tags when present.",
+      "default": true
+    },
+    "proxyConfiguration": {
+      "title": "Proxy configuration",
+      "type": "object",
+      "description": "Optional Apify proxy settings.",
+      "editor": "proxy",
+      "default": {
+        "useApifyProxy": true
+      }
+    }
+  },
+  "required": ["queries"]
+}

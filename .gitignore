@@ -1,0 +1,9 @@
+node_modules/
+dist/
+storage/
+.env
+*.log
+*.tsbuildinfo
+probe*.mjs
+RESUME-NOTES.md
+UDEMY-PARKED-NOTES.md
