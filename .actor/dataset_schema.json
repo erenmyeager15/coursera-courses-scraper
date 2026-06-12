@@ -1,0 +1,284 @@
+{
+  "actorSpecification": 1,
+  "fields": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "source": {
+        "type": "string",
+        "title": "Source",
+        "description": "Source platform for the course record.",
+        "example": "coursera"
+      },
+      "query": {
+        "type": "string",
+        "title": "Query",
+        "description": "Search keyword that returned the course.",
+        "example": "python"
+      },
+      "courseId": {
+        "type": ["string", "null"],
+        "title": "Course ID",
+        "description": "Coursera product identifier.",
+        "example": "course~ejOz7RDUEei99hK0xs-tsg"
+      },
+      "title": {
+        "type": ["string", "null"],
+        "title": "Title",
+        "description": "Course, specialization, or program title.",
+        "example": "Python for Data Science, AI & Development"
+      },
+      "courseUrl": {
+        "type": ["string", "null"],
+        "title": "Course URL",
+        "description": "Full Coursera URL.",
+        "example": "https://www.coursera.org/learn/python-for-applied-data-science-ai"
+      },
+      "courseSlug": {
+        "type": ["string", "null"],
+        "title": "Course Slug",
+        "description": "Coursera URL slug without the domain.",
+        "example": "learn/python-for-applied-data-science-ai"
+      },
+      "productType": {
+        "type": ["string", "null"],
+        "title": "Product Type",
+        "description": "Coursera product type.",
+        "example": "COURSE"
+      },
+      "partners": {
+        "type": "array",
+        "title": "Partners",
+        "description": "Partner institutions or companies.",
+        "items": {
+          "type": "string"
+        },
+        "example": ["IBM"]
+      },
+      "partnerNames": {
+        "type": ["string", "null"],
+        "title": "Partner Names",
+        "description": "Comma-separated partner names for table exports.",
+        "example": "IBM"
+      },
+      "difficulty": {
+        "type": ["string", "null"],
+        "title": "Difficulty",
+        "description": "Coursera difficulty level.",
+        "example": "BEGINNER"
+      },
+      "duration": {
+        "type": ["string", "null"],
+        "title": "Duration",
+        "description": "Coursera duration bucket.",
+        "example": "ONE_TO_THREE_MONTHS"
+      },
+      "skills": {
+        "type": "array",
+        "title": "Skills",
+        "description": "Skill tags shown in Coursera search data.",
+        "items": {
+          "type": "string"
+        },
+        "example": ["Python Programming", "NumPy", "Data Analysis"]
+      },
+      "skillNames": {
+        "type": ["string", "null"],
+        "title": "Skill Names",
+        "description": "Comma-separated skill tags for table exports.",
+        "example": "Python Programming, NumPy, Data Analysis"
+      },
+      "rating": {
+        "type": ["number", "null"],
+        "title": "Rating",
+        "description": "Average Coursera rating.",
+        "example": 4.620138506696019
+      },
+      "reviewCount": {
+        "type": ["integer", "null"],
+        "title": "Review Count",
+        "description": "Number of ratings or reviews exposed in search data.",
+        "example": 43608
+      },
+      "isFree": {
+        "type": ["boolean", "null"],
+        "title": "Is Free",
+        "description": "Whether Coursera marks the course as free.",
+        "example": false
+      },
+      "isPartOfCourseraPlus": {
+        "type": ["boolean", "null"],
+        "title": "Coursera Plus",
+        "description": "Whether the course is part of Coursera Plus.",
+        "example": true
+      },
+      "imageUrl": {
+        "type": ["string", "null"],
+        "title": "Image URL",
+        "description": "Course image URL.",
+        "example": "https://s3.amazonaws.com/coursera-course-photos/c6/fcdecba59c48ad9f64b9cf73964466/BC-5768_VisMerch-Phase-3-Assets_IBM_PythonforDataScience.png"
+      },
+      "resultPage": {
+        "type": "integer",
+        "title": "Result Page",
+        "description": "Coursera search result page where the item was found.",
+        "example": 1
+      },
+      "scrapedAt": {
+        "type": "string",
+        "title": "Scraped At",
+        "description": "ISO timestamp when the item was scraped.",
+        "example": "2026-06-12T06:38:34.841Z"
+      }
+    }
+  },
+  "views": {
+    "overview": {
+      "title": "Courses",
+      "description": "Main Coursera course records for browsing and export.",
+      "transformation": {
+        "fields": [
+          "source",
+          "query",
+          "title",
+          "partnerNames",
+          "productType",
+          "difficulty",
+          "duration",
+          "rating",
+          "reviewCount",
+          "isFree",
+          "isPartOfCourseraPlus",
+          "skillNames",
+          "courseUrl",
+          "imageUrl",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "source": {
+            "label": "Source",
+            "format": "text"
+          },
+          "query": {
+            "label": "Query",
+            "format": "text"
+          },
+          "title": {
+            "label": "Title",
+            "format": "text"
+          },
+          "partnerNames": {
+            "label": "Partners",
+            "format": "text"
+          },
+          "productType": {
+            "label": "Type",
+            "format": "text"
+          },
+          "difficulty": {
+            "label": "Difficulty",
+            "format": "text"
+          },
+          "duration": {
+            "label": "Duration",
+            "format": "text"
+          },
+          "rating": {
+            "label": "Rating",
+            "format": "number"
+          },
+          "reviewCount": {
+            "label": "Reviews",
+            "format": "number"
+          },
+          "isFree": {
+            "label": "Free",
+            "format": "boolean"
+          },
+          "isPartOfCourseraPlus": {
+            "label": "Coursera Plus",
+            "format": "boolean"
+          },
+          "skillNames": {
+            "label": "Skills",
+            "format": "text"
+          },
+          "courseUrl": {
+            "label": "Course URL",
+            "format": "link"
+          },
+          "imageUrl": {
+            "label": "Image",
+            "format": "image"
+          },
+          "scrapedAt": {
+            "label": "Scraped At",
+            "format": "date"
+          }
+        }
+      }
+    },
+    "details": {
+      "title": "Details",
+      "description": "Full course metadata including IDs, slugs, and array fields.",
+      "transformation": {
+        "fields": [
+          "courseId",
+          "courseSlug",
+          "courseUrl",
+          "title",
+          "partners",
+          "skills",
+          "productType",
+          "difficulty",
+          "duration",
+          "rating",
+          "reviewCount",
+          "isFree",
+          "isPartOfCourseraPlus",
+          "imageUrl",
+          "resultPage",
+          "query",
+          "source",
+          "scrapedAt"
+        ]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "courseUrl": {
+            "label": "Course URL",
+            "format": "link"
+          },
+          "partners": {
+            "label": "Partners",
+            "format": "array"
+          },
+          "skills": {
+            "label": "Skills",
+            "format": "array"
+          },
+          "isFree": {
+            "label": "Free",
+            "format": "boolean"
+          },
+          "isPartOfCourseraPlus": {
+            "label": "Coursera Plus",
+            "format": "boolean"
+          },
+          "imageUrl": {
+            "label": "Image",
+            "format": "image"
+          },
+          "scrapedAt": {
+            "label": "Scraped At",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+}

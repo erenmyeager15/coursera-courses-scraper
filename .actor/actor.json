@@ -11,6 +11,9 @@
   "dockerfile": "./Dockerfile",
   "input": "./../INPUT_SCHEMA.json",
   "readme": "./../README.md",
+  "storages": {
+    "dataset": "./dataset_schema.json"
+  },
   "memoryMbytes": 1024,
   "timeoutSecs": 14400,
   "categories": ["RESEARCH", "BUSINESS", "DEVELOPER_TOOLS"],
