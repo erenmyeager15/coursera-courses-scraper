@@ -1,0 +1,9 @@
+{
+  "queries": ["python"],
+  "maxResults": 3,
+  "includeSkills": true,
+  "proxyConfiguration": {
+    "useApifyProxy": true,
+    "apifyProxyGroups": ["RESIDENTIAL"]
+  }
+}
