@@ -19,7 +19,7 @@
     "memoryMbytes": 1024,
     "timeoutSecs": 14400
   },
-  "categories": ["DEVELOPER_TOOLS", "LEAD_GENERATION", "OTHER"],
+  "categories": ["DEVELOPER_TOOLS", "OTHER"],
   "pricingInfo": {
     "pricingModel": "PAY_PER_EVENT",
     "pricingPerEvent": {

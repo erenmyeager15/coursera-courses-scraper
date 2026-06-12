@@ -140,6 +140,12 @@ This Actor uses Apify Pay Per Event pricing. You pay only for clean course recor
 
 Use this Actor for legitimate research, catalog building, and analysis. You are responsible for complying with Coursera's terms, privacy laws, and local regulations wherever you use the data.
 
+## Responsible Use
+
+This Actor is intended for lawful collection of publicly available information only. Users are responsible for ensuring their use complies with the source website's terms, robots.txt, applicable privacy laws, including India's DPDP Act, and all local regulations.
+
+Do not use this Actor to collect, store, sell, or misuse personal data without a lawful basis. The Actor author is not responsible for misuse by end users.
+
 ## License
 
 Apache-2.0. See `LICENSE`.
