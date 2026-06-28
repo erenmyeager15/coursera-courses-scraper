@@ -9,7 +9,8 @@
     "dev": "tsx src/main.ts"
   },
   "dependencies": {
-    "apify": "^3.4.2"
+    "apify": "^3.4.2",
+    "undici": "^7.28.0"
   },
   "devDependencies": {
     "@apify/tsconfig": "^0.1.1",

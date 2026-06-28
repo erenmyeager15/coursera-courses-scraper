@@ -29,7 +29,7 @@ Built with Node.js 20, TypeScript, and the Apify SDK using native fetch against 
 
 ## Pricing
 
-This Actor uses Apify Pay Per Event pricing. You pay only for clean course records delivered to the dataset; failed, blocked, or empty results are not billed.
+This Actor uses Apify Pay Per Event pricing. Each clean course record is saved and charged atomically; failed, blocked, or empty results are not billed, and pagination stops when the user's spending limit is reached.
 
 | Event name | Price per event | 1,000 results | 10,000 results |
 | --- | ---: | ---: | ---: |
@@ -44,7 +44,7 @@ This Actor uses Apify Pay Per Event pricing. You pay only for clean course recor
 | `productTypes` | array | no | (none) | Optional filter: `COURSE`, `SPECIALIZATION`, `PROFESSIONAL_CERTIFICATE`, `GUIDED_PROJECT`, `PROJECT`, `DEGREE`, `MASTERTRACK`. |
 | `difficulties` | array | no | (none) | Optional filter: `BEGINNER`, `INTERMEDIATE`, `ADVANCED`, `MIXED`. |
 | `includeSkills` | boolean | no | `true` | Include Coursera skill tags when present. |
-| `proxyConfiguration` | object | no | Apify Proxy | Apify proxy settings. Residential recommended. |
+| `proxyConfiguration` | object | no | Proxy off | Optional Apify proxy settings for blocked or large runs. |
 
 ## Example Input
 
@@ -126,7 +126,7 @@ This Actor uses Apify Pay Per Event pricing. You pay only for clean course recor
 2. Fetches Coursera search pages and reads the embedded public catalog payload.
 3. Extracts and cleans fields, mapping raw enums to readable labels.
 4. Deduplicates by Coursera product ID.
-5. Charges `course-scraped` only after a clean record is saved, then writes to the Apify Dataset.
+5. Atomically saves each clean record and charges `course-scraped`, stopping pagination at the spending limit.
 
 ## Known Limits
 

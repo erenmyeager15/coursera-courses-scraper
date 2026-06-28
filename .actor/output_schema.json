@@ -1,0 +1,14 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "Coursera Courses Scraper Output",
+  "description": "Structured Coursera course catalog records with queries, course IDs, titles, URLs, product types, partner names, difficulty, duration, skills, ratings, review counts, free/Coursera Plus flags, image URLs, result pages, and scraped timestamps.",
+  "type": "object",
+  "properties": {
+    "results": {
+      "type": "string",
+      "title": "Coursera course records",
+      "description": "Clean dataset items containing public Coursera course catalog, partner, skill, difficulty, duration, rating, image, and URL data.",
+      "template": "{{links.apiDefaultDatasetUrl}}/items"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import { Actor, log } from 'apify';
-import type { ActorInput, CourseraProductHit, CourseRecord, SearchOptions } from './types.js';
+import { ProxyAgent } from 'undici';
+import type { ActorInput, CourseraProductHit, CourseRecord, ProxyUrlProvider, SearchOptions } from './types.js';
 
 const COURSES_PER_PAGE = 12;
 const MAX_RESULTS = 500;
@@ -35,15 +36,23 @@ export function normalizeInput(input: ActorInput): SearchOptions {
     };
 }
 
-export async function scrapeCoursera(options: SearchOptions): Promise<number> {
+export async function scrapeCoursera(
+    options: SearchOptions,
+    proxyConfiguration?: ProxyUrlProvider,
+): Promise<{ records: number; spendingLimitReached: boolean }> {
     const seenIds = new Set<string>();
     let pushed = 0;
+    let spendingLimitReached = false;
 
     for (const query of options.queries) {
+        if (spendingLimitReached) break;
+
         const maxPages = Math.ceil(options.maxResults / COURSES_PER_PAGE) + 2;
 
         for (let page = 1; page <= maxPages && pushed < options.maxResults; page++) {
-            const html = await fetchSearchPage(query, page);
+            if (spendingLimitReached) break;
+
+            const html = await fetchSearchPage(query, page, proxyConfiguration);
             const hits = extractCourseraHits(html);
             log.info(`Coursera search page parsed`, { query, page, hits: hits.length });
 
@@ -62,26 +71,37 @@ export async function scrapeCoursera(options: SearchOptions): Promise<number> {
                 const dedupeKey = record.courseId ?? `${record.courseUrl ?? ''}:${record.title ?? ''}`;
                 if (!dedupeKey || seenIds.has(dedupeKey)) continue;
 
-                seenIds.add(dedupeKey);
-                await Actor.pushData(record);
-                await chargeForRecord();
-                pushed++;
+                const chargeResult = await Actor.pushData(record, 'course-scraped');
+                const recordWasSaved = chargeResult.chargedCount > 0 || !chargeResult.eventChargeLimitReached;
+                if (recordWasSaved) {
+                    seenIds.add(dedupeKey);
+                    pushed++;
+                }
+
+                if (chargeResult.eventChargeLimitReached) {
+                    spendingLimitReached = true;
+                    const message = `Stopped at the user's spending limit after ${pushed} course(s).`;
+                    await Actor.setStatusMessage(message);
+                    log.warning(message);
+                    break;
+                }
             }
 
+            if (spendingLimitReached) break;
             if (hits.length < COURSES_PER_PAGE) break;
             await sleep(randomInteger(600, 1400));
         }
     }
 
-    return pushed;
+    return { records: pushed, spendingLimitReached };
 }
 
-async function fetchSearchPage(query: string, page: number): Promise<string> {
+async function fetchSearchPage(query: string, page: number, proxyConfiguration?: ProxyUrlProvider): Promise<string> {
     const url = new URL('/search', BASE_URL);
     url.searchParams.set('query', query);
     if (page > 1) url.searchParams.set('page', String(page));
 
-    const response = await fetchWithRetry(url.toString(), 3);
+    const response = await fetchWithRetry(url.toString(), 3, proxyConfiguration);
     const html = await response.text();
 
     if (!html.includes('window.__APOLLO_STATE__')) {
@@ -91,12 +111,17 @@ async function fetchSearchPage(query: string, page: number): Promise<string> {
     return html;
 }
 
-async function fetchWithRetry(url: string, retries: number): Promise<Response> {
+async function fetchWithRetry(url: string, retries: number, proxyConfiguration?: ProxyUrlProvider): Promise<Response> {
     let lastError: Error | undefined;
 
     for (let attempt = 1; attempt <= retries; attempt++) {
         try {
-            const response = await fetch(url, { headers: DEFAULT_HEADERS });
+            const proxyUrl = await proxyConfiguration?.newUrl();
+            const dispatcher = proxyUrl ? new ProxyAgent(proxyUrl) : undefined;
+            const response = await fetch(url, {
+                headers: DEFAULT_HEADERS,
+                ...(dispatcher ? { dispatcher } : {}),
+            } as RequestInit);
             if (response.ok) return response;
 
             const retryable = response.status === 429 || response.status >= 500;
@@ -245,16 +270,6 @@ function toCourseRecord(hit: CourseraProductHit, query: string, page: number, in
         resultPage: page,
         scrapedAt: new Date().toISOString(),
     };
-}
-
-async function chargeForRecord(): Promise<void> {
-    try {
-        await Actor.charge({ eventName: 'course-scraped' });
-    } catch (error) {
-        log.debug('Actor.charge skipped or failed in current environment', {
-            message: error instanceof Error ? error.message : String(error),
-        });
-    }
 }
 
 function cleanText(value: unknown): string | null {

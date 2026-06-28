@@ -22,7 +22,12 @@ export interface ActorInput {
         useApifyProxy?: boolean;
         apifyProxyGroups?: string[];
         apifyProxyCountry?: string;
+        proxyUrls?: string[];
     };
+}
+
+export interface ProxyUrlProvider {
+    newUrl(): Promise<string | null>;
 }
 
 export interface CourseraProductHit {

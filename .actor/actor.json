@@ -11,13 +11,14 @@
   "dockerfile": "./Dockerfile",
   "input": "./../INPUT_SCHEMA.json",
   "readme": "./../README.md",
+  "output": "./output_schema.json",
   "storages": {
     "dataset": "./dataset_schema.json"
   },
   "defaultRunOptions": {
     "build": "latest",
-    "memoryMbytes": 1024,
-    "timeoutSecs": 14400
+    "memoryMbytes": 512,
+    "timeoutSecs": 3600
   },
   "categories": ["DEVELOPER_TOOLS", "OTHER"],
   "pricingInfo": {

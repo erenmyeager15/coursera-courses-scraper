@@ -18,6 +18,7 @@
       "title": "Maximum results",
       "type": "integer",
       "description": "Maximum number of unique courses to save across all queries.",
+      "editor": "number",
       "minimum": 1,
       "maximum": 500,
       "default": 100
@@ -64,6 +65,7 @@
       "title": "Include skills",
       "type": "boolean",
       "description": "Include Coursera skill tags when present.",
+      "editor": "checkbox",
       "default": true
     },
     "proxyConfiguration": {
@@ -72,7 +74,7 @@
       "description": "Optional Apify proxy settings.",
       "editor": "proxy",
       "default": {
-        "useApifyProxy": true
+        "useApifyProxy": false
       }
     }
   },
