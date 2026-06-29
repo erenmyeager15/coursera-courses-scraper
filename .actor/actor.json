@@ -20,11 +20,18 @@
     "memoryMbytes": 512,
     "timeoutSecs": 3600
   },
-  "categories": ["DEVELOPER_TOOLS", "OTHER"],
+  "categories": ["BUSINESS", "DEVELOPER_TOOLS", "OTHER"],
   "pricingInfo": {
     "pricingModel": "PAY_PER_EVENT",
     "pricingPerEvent": {
       "actorChargeEvents": {
+        "apify-actor-start": {
+          "eventTitle": "Actor Start",
+          "eventDescription": "Charged when the Actor starts running. Number of events charged depends on Actor memory (one event per GB, minimum one event).",
+          "eventPriceUsd": 0.00005,
+          "isPrimaryEvent": false,
+          "isOneTimeEvent": true
+        },
         "course-scraped": {
           "eventTitle": "Course scraped",
           "eventDescription": "Charged once for each unique Coursera course record saved to the dataset.",
@@ -34,5 +41,9 @@
         }
       }
     }
+  },
+  "exampleRunInput": {
+    "body": "{\"queries\":[\"python\"],\"maxResults\":5,\"productTypes\":[\"COURSE\"],\"difficulties\":[],\"includeSkills\":true,\"proxyConfiguration\":{\"useApifyProxy\":false}}",
+    "contentType": "application/json; charset=utf-8"
   }
 }

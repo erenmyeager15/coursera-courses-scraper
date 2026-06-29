@@ -29,7 +29,7 @@ export function normalizeInput(input: ActorInput): SearchOptions {
 
     return {
         queries: queries.length > 0 ? queries : ['python'],
-        maxResults: clampInteger(input.maxResults ?? 100, 1, MAX_RESULTS),
+        maxResults: clampInteger(input.maxResults ?? 10, 1, MAX_RESULTS),
         productTypes: unique((input.productTypes ?? []).map((type) => type.toUpperCase())),
         difficulties: unique((input.difficulties ?? []).map((difficulty) => difficulty.toUpperCase())),
         includeSkills: input.includeSkills !== false,

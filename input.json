@@ -1,6 +1,10 @@
 {
   "queries": ["python"],
-  "maxResults": 10,
+  "maxResults": 5,
   "productTypes": ["COURSE"],
-  "includeSkills": true
+  "difficulties": [],
+  "includeSkills": true,
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
 }

@@ -1,72 +1,57 @@
-# Coursera Courses Scraper - Titles, Ratings, Skills & Partners
+# Coursera Courses Scraper - Course Catalog Data
 
-Scrape the Coursera course catalog by keyword and export clean course records to JSON, CSV, Excel, or HTML, or pull them via the Apify API. This Coursera scraper extracts course titles, university and company partners, ratings, review counts, skills, difficulty, duration, product type, images, and URLs with no login and no API key required.
+Scrape Coursera public course catalog search results and export clean course records with titles, partners, URLs, product type, difficulty, duration, ratings, review counts, skills, image URLs, and scrape timestamps.
 
-Built with Node.js 20, TypeScript, and the Apify SDK using native fetch against Coursera's public search data, with retries and resilient parsing so runs are reliable and repeatable.
+This Actor is Coursera-only. The local folder name still mentions Udemy from an earlier plan, but Udemy is intentionally not included because public Udemy endpoints were blocked during probing and Udemy discontinued access to its Affiliate API on January 1, 2025. Shipping a reliable Coursera scraper is safer than advertising a fragile Udemy integration.
 
-> Why Coursera only? This build follows a probe-first workflow. Coursera exposes enough public page data for reliable catalog extraction without a login or paid key. Udemy is intentionally not included: public Udemy course endpoints returned Cloudflare blocks during probing, and Udemy discontinued access to its Affiliate API on January 1, 2025. The actor therefore ships as a reliable Coursera-only scraper instead of shipping a fragile or misleading Udemy integration.
-
-## What It Extracts
-
-- Course, specialization, or program title
-- Course URL and Coursera slug
-- Product type (course, specialization, professional certificate, and similar)
-- University, company, or institution partners
-- Difficulty level and duration bucket
-- Skill tags exposed in Coursera search data
-- Average rating and review/rating count
-- Free flag and Coursera Plus flag when present
-- Course image URL
-- Search query, result page, and scrape timestamp
-
-## Use Cases
-
-1. Build course directories and training catalogs for an education or L&D site.
-2. Research competing online courses by keyword, partner, or skill.
-3. Track university and company partner offerings over time.
-4. Collect B2B education leads for learning and upskilling platforms.
-5. Analyze skills demand, difficulty mix, ratings, and review volume across topics.
-
-## Pricing
-
-This Actor uses Apify Pay Per Event pricing. Each clean course record is saved and charged atomically; failed, blocked, or empty results are not billed, and pagination stops when the user's spending limit is reached.
-
-| Event name | Price per event | 1,000 results | 10,000 results |
-| --- | ---: | ---: | ---: |
-| `course-scraped` | $0.002 | $2.00 | $20.00 |
-
-## Input
-
-| Field | Type | Required | Default | Description |
-| --- | --- | --- | --- | --- |
-| `queries` | array | yes | `["python", "data science"]` | One or more Coursera search keywords. |
-| `maxResults` | integer | no | `100` | Maximum unique courses to save across all queries (max 500). |
-| `productTypes` | array | no | (none) | Optional filter: `COURSE`, `SPECIALIZATION`, `PROFESSIONAL_CERTIFICATE`, `GUIDED_PROJECT`, `PROJECT`, `DEGREE`, `MASTERTRACK`. |
-| `difficulties` | array | no | (none) | Optional filter: `BEGINNER`, `INTERMEDIATE`, `ADVANCED`, `MIXED`. |
-| `includeSkills` | boolean | no | `true` | Include Coursera skill tags when present. |
-| `proxyConfiguration` | object | no | Proxy off | Optional Apify proxy settings for blocked or large runs. |
-
-## Example Input
+## Quick Start
 
 ```json
 {
-  "queries": ["python", "data science"],
-  "maxResults": 100,
+  "queries": ["python"],
+  "maxResults": 5,
   "productTypes": ["COURSE"],
-  "difficulties": ["BEGINNER"],
-  "includeSkills": true
+  "difficulties": [],
+  "includeSkills": true,
+  "proxyConfiguration": {
+    "useApifyProxy": false
+  }
 }
 ```
 
-## How to Scrape Coursera Courses (Step by Step)
+This small run searches Coursera for Python courses, limits results to 5, and keeps proxy usage off.
 
-1. Click **Try for free** / **Run**.
-2. Enter one or more course search keywords.
-3. Set the maximum number of results (start small to test).
-4. Optionally filter by product type or difficulty.
-5. Run the actor, then export results as JSON, CSV, Excel, or HTML, or pull them via the Apify API.
+## Input
 
-## Sample Output
+| Field | Type | Default | Notes |
+| --- | --- | --- | --- |
+| `queries` | string array | `["python"]` | Coursera search keywords. |
+| `maxResults` | integer | `10` | Maximum unique course records across all queries. |
+| `productTypes` | string array | `[]` | Optional filter such as `COURSE`, `SPECIALIZATION`, or `PROFESSIONAL_CERTIFICATE`. |
+| `difficulties` | string array | `[]` | Optional filter such as `BEGINNER`, `INTERMEDIATE`, `ADVANCED`, or `MIXED`. |
+| `includeSkills` | boolean | `true` | Include Coursera skill tags when present. |
+| `proxyConfiguration` | object | disabled | Usually not needed for small runs. Enable only if larger runs hit access issues. |
+
+## Output
+
+Each dataset row is one Coursera catalog item:
+
+| Field | Description |
+| --- | --- |
+| `source`, `query` | Source platform and search keyword. |
+| `courseId`, `title`, `courseUrl`, `courseSlug` | Coursera identity and URL fields. |
+| `productType`, `productTypeLabel` | Course, specialization, certificate, or similar product type. |
+| `partners`, `partnerNames` | Partner institutions or companies. |
+| `difficulty`, `difficultyLabel` | Difficulty level when exposed. |
+| `duration`, `durationLabel` | Duration bucket when exposed. |
+| `skills`, `skillNames` | Public skill tags when exposed and enabled. |
+| `rating`, `ratingRounded`, `reviewCount` | Rating metadata from Coursera search data. |
+| `isFree`, `isPartOfCourseraPlus` | Availability flags when exposed. |
+| `imageUrl`, `resultPage`, `scrapedAt` | Image, result page, and scrape timestamp. |
+
+## Verified Sample
+
+An existing successful run for `python` returned this row:
 
 ```json
 {
@@ -75,77 +60,47 @@ This Actor uses Apify Pay Per Event pricing. Each clean course record is saved a
   "courseId": "course~ejOz7RDUEei99hK0xs-tsg",
   "title": "Python for Data Science, AI & Development",
   "courseUrl": "https://www.coursera.org/learn/python-for-applied-data-science-ai",
-  "courseSlug": "learn/python-for-applied-data-science-ai",
   "productType": "COURSE",
   "productTypeLabel": "Course",
   "partners": ["IBM"],
   "partnerNames": "IBM",
   "difficulty": "BEGINNER",
-  "difficultyLabel": "Beginner",
-  "duration": "ONE_TO_THREE_MONTHS",
   "durationLabel": "1-3 months",
-  "skills": ["Python Programming", "NumPy", "Data Analysis"],
-  "skillNames": "Python Programming, NumPy, Data Analysis",
-  "rating": 4.620138506696019,
   "ratingRounded": 4.62,
-  "reviewCount": 43608,
-  "isFree": false,
-  "isPartOfCourseraPlus": true,
-  "imageUrl": "https://s3.amazonaws.com/coursera-course-photos/c6/fcdecba59c48ad9f64b9cf73964466/BC-5768_VisMerch-Phase-3-Assets_IBM_PythonforDataScience.png",
-  "resultPage": 1,
-  "scrapedAt": "2026-06-12T19:57:18.970Z"
+  "reviewCount": 43627,
+  "isPartOfCourseraPlus": true
 }
 ```
 
-## Data Fields
+## Pricing
 
-| Field | Description |
-| --- | --- |
-| `source` | Source platform, currently `coursera`. |
-| `query` | Search keyword that found the course. |
-| `courseId` | Coursera product identifier. |
-| `title` | Course or program title. |
-| `courseUrl` | Full Coursera URL. |
-| `courseSlug` | Coursera URL slug without the domain. |
-| `productType` / `productTypeLabel` | Raw and human-friendly product type. |
-| `partners` / `partnerNames` | University, company, or institution partners. |
-| `difficulty` / `difficultyLabel` | Raw and human-friendly difficulty level. |
-| `duration` / `durationLabel` | Raw and human-friendly duration bucket. |
-| `skills` / `skillNames` | Public skill tags when available. |
-| `rating` / `ratingRounded` | Average rating, full and rounded. |
-| `reviewCount` | Number of ratings or reviews exposed in search data. |
-| `isFree` | Coursera free flag when present. |
-| `isPartOfCourseraPlus` | Coursera Plus flag when present. |
-| `imageUrl` | Course image URL. |
-| `resultPage` | Search result page where the item was found. |
-| `scrapedAt` | ISO timestamp for the scrape. |
+Active pay-per-event pricing:
 
-## How It Works
+| Event | Price |
+| --- | ---: |
+| `course-scraped` | `$0.002` per course |
+| `apify-actor-start` | `$0.00005` per GB at run start |
 
-1. Validates input and normalizes queries and filters.
-2. Fetches Coursera search pages and reads the embedded public catalog payload.
-3. Extracts and cleans fields, mapping raw enums to readable labels.
-4. Deduplicates by Coursera product ID.
-5. Atomically saves each clean record and charges `course-scraped`, stopping pagination at the spending limit.
+Each unique course is saved and charged atomically. Duplicate course IDs are skipped, failed or empty results are not charged, and pagination stops when the user's spending limit is reached.
 
-## Known Limits
+## Common Workflows
 
-- Pagination is supported up to 500 unique records per run.
-- Results are deduplicated by Coursera product ID.
-- Skill tags, ratings, and Plus/free flags are conditional on what Coursera exposes in search data.
-- Coursera may change its public page payloads, which can require parser updates.
-- Udemy is parked until an official, accessible, and compliant data source becomes available.
+1. Build a public catalog of courses for a topic such as Python, AI, marketing, or project management.
+2. Compare partner institutions, ratings, difficulty, and duration across a keyword.
+3. Track education-market changes over time with scheduled runs.
+4. Export course rows to CSV, Excel, JSON, HTML, or the Apify API.
 
-## Legal and Ethical Use
+## Notes and Limits
 
-Use this Actor for legitimate research, catalog building, and analysis. You are responsible for complying with Coursera's terms, privacy laws, and local regulations wherever you use the data.
+- Coursera search data changes over time; fields depend on what Coursera exposes publicly.
+- Skill tags, ratings, free flags, and Coursera Plus flags are conditional and may be null.
+- Udemy is not part of this Actor until there is a stable, compliant public or official data source.
+- This Actor collects public course catalog metadata, not learner data.
 
 ## Responsible Use
 
-This Actor is intended for lawful collection of publicly available information only. Users are responsible for ensuring their use complies with the source website's terms, robots.txt, applicable privacy laws, including India's DPDP Act, and all local regulations.
-
-Do not use this Actor to collect, store, sell, or misuse personal data without a lawful basis. The Actor author is not responsible for misuse by end users.
+Use this Actor for lawful course catalog research and analysis. Respect Coursera terms, copyright, privacy laws, and any restrictions that apply to exported or republished data.
 
 ## License
 
-Apache-2.0. See `LICENSE`.
+Apache-2.0

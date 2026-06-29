@@ -10,6 +10,7 @@
       "description": "One or more Coursera search queries.",
       "editor": "stringList",
       "prefill": ["python", "data science"],
+      "default": ["python"],
       "items": {
         "type": "string"
       }
@@ -21,13 +22,14 @@
       "editor": "number",
       "minimum": 1,
       "maximum": 500,
-      "default": 100
+      "default": 10
     },
     "productTypes": {
       "title": "Product types",
       "type": "array",
       "description": "Optional product type filter.",
       "editor": "select",
+      "default": [],
       "items": {
         "type": "string",
         "enum": [
@@ -55,6 +57,7 @@
       "type": "array",
       "description": "Optional difficulty filter.",
       "editor": "select",
+      "default": [],
       "items": {
         "type": "string",
         "enum": ["BEGINNER", "INTERMEDIATE", "ADVANCED", "MIXED"],
