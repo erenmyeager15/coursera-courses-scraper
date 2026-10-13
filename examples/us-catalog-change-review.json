@@ -1,0 +1,8 @@
+{
+  "mode": "demo",
+  "demoPreset": "us-catalog-change-review",
+  "requiredSkills": ["Python", "SQL"],
+  "priceChangeThresholdPercent": 5,
+  "comparisonWindowDays": 30,
+  "maxResults": 1
+}

@@ -1,10 +1,10 @@
 {
   "actorSpecification": 1,
   "name": "coursera-courses-scraper",
-  "title": "Coursera Courses Scraper - Course Catalog Data",
-  "description": "Scrape Coursera course catalog search results with titles, partners, ratings, skills, difficulty, duration, product type, URLs, and images.",
-  "version": "1.0",
-  "buildTag": "latest",
+  "title": "Coursera Course Analyzer — Skill Gaps & US Budgets",
+  "description": "Analyze licensed Coursera JSON/CSV exports for skill gaps, US/USD learning budgets, supplied price changes and comparison reports. No live scraping.",
+  "version": "1.1",
+  "buildTag": "coursera-import-qa",
   "meta": {
     "templateId": "ts-start"
   },
@@ -20,7 +20,11 @@
     "memoryMbytes": 512,
     "timeoutSecs": 3600
   },
-  "categories": ["BUSINESS", "DEVELOPER_TOOLS", "OTHER"],
+  "categories": [
+    "BUSINESS",
+    "DEVELOPER_TOOLS",
+    "OTHER"
+  ],
   "pricingInfo": {
     "pricingModel": "PAY_PER_EVENT",
     "pricingPerEvent": {
@@ -33,8 +37,8 @@
           "isOneTimeEvent": true
         },
         "course-scraped": {
-          "eventTitle": "Course scraped",
-          "eventDescription": "Charged once for each unique Coursera course record saved to the dataset.",
+          "eventTitle": "Course analyzed",
+          "eventDescription": "One successfully saved unique course analysis from a licensed export, including supplied observations. No course-result event for synthetic demos, invalid input, duplicates or unsaved courses. Start/platform usage apply.",
           "eventPriceUsd": 0.002,
           "isPrimaryEvent": true,
           "isOneTimeEvent": false
@@ -43,7 +47,7 @@
     }
   },
   "exampleRunInput": {
-    "body": "{\"queries\":[\"python\"],\"maxResults\":5,\"productTypes\":[\"COURSE\"],\"difficulties\":[],\"includeSkills\":true,\"proxyConfiguration\":{\"useApifyProxy\":false}}",
+    "body": "{\"mode\":\"demo\",\"demoPreset\":\"us-skills-comparison\",\"requiredSkills\":[\"Python\",\"SQL\",\"Data analysis\"],\"targetDifficulties\":[\"beginner\"],\"maxResults\":1}",
     "contentType": "application/json; charset=utf-8"
   }
 }

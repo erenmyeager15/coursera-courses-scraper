@@ -1,0 +1,8 @@
+{
+  "mode": "demo",
+  "demoPreset": "us-learning-budget",
+  "budgetUsd": 60,
+  "subscriptionPeriods": 3,
+  "maximumStudyHours": 24,
+  "maxResults": 1
+}

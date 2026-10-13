@@ -1,10 +1,13 @@
 {
-  "queries": ["python"],
-  "maxResults": 5,
-  "productTypes": ["COURSE"],
-  "difficulties": [],
-  "includeSkills": true,
-  "proxyConfiguration": {
-    "useApifyProxy": false
-  }
+  "mode": "demo",
+  "demoPreset": "us-skills-comparison",
+  "requiredSkills": [
+    "Python",
+    "SQL",
+    "Data analysis"
+  ],
+  "targetDifficulties": [
+    "beginner"
+  ],
+  "maxResults": 1
 }

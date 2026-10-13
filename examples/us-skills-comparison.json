@@ -1,0 +1,8 @@
+{
+  "mode": "demo",
+  "demoPreset": "us-skills-comparison",
+  "requiredSkills": ["Python", "SQL", "Data analysis"],
+  "targetDifficulties": ["beginner"],
+  "maximumStudyHours": 20,
+  "maxResults": 1
+}

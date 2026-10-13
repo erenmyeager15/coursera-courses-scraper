@@ -1,82 +1,35 @@
-export type SourceName = 'coursera';
-
-export type ProductType =
-    | 'COURSE'
-    | 'SPECIALIZATION'
-    | 'PROFESSIONAL_CERTIFICATE'
-    | 'GUIDED_PROJECT'
-    | 'PROJECT'
-    | 'DEGREE'
-    | 'MASTERTRACK'
-    | 'CERTIFICATE'
-    | string;
-
-export interface ActorInput {
-    queries?: string[];
-    keyword?: string;
-    maxResults?: number;
-    productTypes?: ProductType[];
-    difficulties?: string[];
-    includeSkills?: boolean;
-    proxyConfiguration?: {
-        useApifyProxy?: boolean;
-        apifyProxyGroups?: string[];
-        apifyProxyCountry?: string;
-        proxyUrls?: string[];
-    };
+export type Mode = 'demo' | 'import';
+export type DemoPreset = 'us-skills-comparison' | 'us-learning-budget' | 'us-catalog-change-review';
+export type PriceBasis = 'standard' | 'promotional' | 'unknown';
+export type AccessModel = 'one-time' | 'subscription' | 'free' | 'unknown';
+export type BillingPeriod = 'once' | 'monthly' | 'annual' | 'unknown';
+export type PriceScope = 'per-learner-course' | 'per-learner-catalog' | 'unknown';
+export interface ResearchOptions {
+    requiredSkills: string[]; targetDifficulties: string[];
+    budgetUsd: number | null; maximumStudyHours: number | null;
+    subscriptionPeriods: number; priceChangeThresholdPercent: number; comparisonWindowDays: number;
 }
-
-export interface ProxyUrlProvider {
-    newUrl(): Promise<string | null>;
+export interface NormalizedInput {
+    mode: Mode; demoPreset: DemoPreset; maxResults: number; research: ResearchOptions;
 }
-
-export interface CourseraProductHit {
-    id: string | undefined;
-    name: string | undefined;
-    url: string | undefined;
-    partners: string[] | undefined;
-    productType: string | undefined;
-    difficulty: string | undefined;
-    duration: string | undefined;
-    skills: string[] | undefined;
-    rating: number | undefined;
-    ratings: number | undefined;
-    imageUrl: string | undefined;
-    free: boolean | undefined;
-    plus: boolean | undefined;
+export interface CourseObservation {
+    courseId: string; title: string; observedAt: string; courseUrl: string | null;
+    provider: string | null; courseType: string | null; difficulty: string | null;
+    skills: string[] | null; language: string | null; durationHours: number | null; durationLabel: string | null;
+    rating: number | null; reviewCount: number | null; available: boolean | null; certificateIncluded: boolean | null;
+    priceAmount: number | null; additionalFeesAmount: number | null; currency: string | null; offerCountry: string | null;
+    priceBasis: PriceBasis; accessModel: AccessModel; billingPeriod: BillingPeriod; priceScope: PriceScope;
+    taxBasis: 'included' | 'excluded' | 'unknown'; comparisonGroup: string | null;
 }
-
-export interface CourseRecord {
-    source: SourceName;
-    query: string;
-    courseId: string | null;
-    title: string | null;
-    courseUrl: string | null;
-    courseSlug: string | null;
-    productType: string | null;
-    productTypeLabel: string | null;
-    partners: string[];
-    partnerNames: string | null;
-    difficulty: string | null;
-    difficultyLabel: string | null;
-    duration: string | null;
-    durationLabel: string | null;
-    skills: string[];
-    skillNames: string | null;
-    rating: number | null;
-    ratingRounded: number | null;
-    reviewCount: number | null;
-    isFree: boolean | null;
-    isPartOfCourseraPlus: boolean | null;
-    imageUrl: string | null;
-    resultPage: number;
-    scrapedAt: string;
+export interface CourseAnalysis {
+    recordType: 'authorized-course-analysis' | 'synthetic-course-preview';
+    source: 'user-authorized-import' | 'synthetic-demo'; platform: 'coursera'; isSynthetic: boolean;
+    courseId: string; title: string; dataProvider: string; importedAt: string;
+    observationCount: number; observations: CourseObservation[];
 }
-
-export interface SearchOptions {
-    queries: string[];
-    maxResults: number;
-    productTypes: string[];
-    difficulties: string[];
-    includeSkills: boolean;
+export interface ImportPlan {
+    records: CourseAnalysis[]; inputRowCount: number; normalizedObservationCount: number;
+    duplicateObservationsRemoved: number; inputCourseCount: number; selectedCourseCount: number;
+    omittedCourseCount: number; unsupportedColumnsDropped: number; dataProvider: string;
 }
+export interface ChargeResultLike { chargedCount: number; eventChargeLimitReached: boolean; }

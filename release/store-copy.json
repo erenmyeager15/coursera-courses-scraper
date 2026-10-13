@@ -1,0 +1,10 @@
+{
+  "name": "coursera-courses-scraper",
+  "title": "Coursera Course Analyzer — Skill Gaps & US Budgets",
+  "description": "Analyze licensed Coursera JSON/CSV exports for skill gaps, US/USD learning budgets, supplied price changes and comparison reports. No live scraping.",
+  "seoTitle": "Coursera Course Analyzer — Skill Gaps & US Budgets",
+  "seoDescription": "Analyze licensed Coursera exports for skill-tag gaps, US/USD budgets and supplied price changes. JSON/CSV reports and synthetic demos; no live scraping.",
+  "maintenanceSeoDescription": "Under maintenance. Staging-tested Coursera JSON/CSV analysis for skill-tag gaps, US/USD budgets and supplied changes. No live scraping; release pending.",
+  "status": "RELEASE COPY PREPARED — use maintenance-qualified SEO until tested activation; final release not yet performed",
+  "boundary": "Authorized analysis does not establish a source licence or verify current course facts. No guaranteed rankings, learning outcomes, profitability or competitor superiority."
+}

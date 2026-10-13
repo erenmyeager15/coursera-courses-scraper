@@ -1,85 +1,148 @@
 {
-  "title": "Coursera Courses Scraper Input",
-  "description": "Search Coursera's public course catalog and export clean course records.",
+  "title": "Coursera Course Analysis — Licensed Import or Synthetic Demo",
+  "description": "Compare authorized course observations or view invented US learning reports. No live Coursera/Udemy collection, API, login, proxy, history refresh or enrollment.",
   "type": "object",
   "schemaVersion": 1,
+  "required": [
+    "mode"
+  ],
   "properties": {
-    "queries": {
-      "title": "Search keywords",
-      "type": "array",
-      "description": "One or more Coursera search queries.",
-      "editor": "stringList",
-      "prefill": ["python", "data science"],
-      "default": ["python"],
-      "items": {
-        "type": "string"
-      }
+    "mode": {
+      "title": "Data mode",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "demo",
+        "import"
+      ],
+      "enumTitles": [
+        "Synthetic preview — NOT real course data",
+        "Licensed JSON/CSV import — no lookup"
+      ],
+      "prefill": "demo",
+      "description": "Choose explicitly. Old search/proxy tasks receive a migration error. Demos create zero dataset rows/result fees, but start and platform usage apply."
+    },
+    "demoPreset": {
+      "title": "Synthetic US learning preview",
+      "type": "string",
+      "editor": "select",
+      "enum": [
+        "us-skills-comparison",
+        "us-learning-budget",
+        "us-catalog-change-review"
+      ],
+      "enumTitles": [
+        "Exact skill-tag comparison",
+        "Entered US learning budget",
+        "Supplied course and price changes"
+      ],
+      "default": "us-skills-comparison",
+      "description": "Invented developer examples, not Coursera prices, course recommendations or real change history."
+    },
+    "importJson": {
+      "title": "Licensed observations — JSON text",
+      "type": "string",
+      "editor": "textarea",
+      "isSecret": true,
+      "description": "Paste an ARRAY as text, maximum 2 MiB / 1,000 observations / 60 fields per row. Required: courseId string, title, observedAt UTC date/timestamp. No URL/file fetching. Never include learner data, credentials or assessment content."
+    },
+    "importCsv": {
+      "title": "Licensed observations — CSV text",
+      "type": "string",
+      "editor": "textarea",
+      "isSecret": true,
+      "description": "Header plus 1–1,000 rows, maximum 2 MiB / 60 columns. Skills use | separators or a JSON list. Prices and hours must be unambiguous numeric values. See README context guide."
+    },
+    "importSource": {
+      "title": "Export provider/source label",
+      "type": "string",
+      "editor": "textfield",
+      "description": "Required for import, maximum 160 characters. Public report label; never put credentials or personal data here. It does not establish source rights or accuracy."
+    },
+    "authorizedData": {
+      "title": "I am licensed to use this export through this paid analysis service",
+      "type": "boolean",
+      "editor": "checkbox",
+      "default": false,
+      "description": "TRUE required for import. Public visibility, ordinary learner/API access, or another scraper does not by itself establish commercial rights. Declaration is not a verified licence; demo does not require it."
     },
     "maxResults": {
-      "title": "Maximum results",
+      "title": "Maximum saved course analyses",
       "type": "integer",
-      "description": "Maximum number of unique courses to save across all queries.",
       "editor": "number",
       "minimum": 1,
       "maximum": 500,
-      "default": 10
+      "default": 1,
+      "description": "Import: first-seen unique course IDs, including all their supplied observations. Whole-course cap; omitted courses are not billed/exported. Demos have up to three invented previews, not dataset rows."
     },
-    "productTypes": {
-      "title": "Product types",
+    "requiredSkills": {
+      "title": "Required skill tags",
       "type": "array",
-      "description": "Optional product type filter.",
-      "editor": "select",
+      "editor": "stringList",
+      "items": {
+        "type": "string"
+      },
       "default": [],
+      "description": "Up to 50 tags / 80 characters. Exact case/whitespace/Unicode-normalized matching only. No semantic equivalence, skill proficiency or employability inference."
+    },
+    "targetDifficulties": {
+      "title": "Target supplied difficulty",
+      "type": "array",
+      "editor": "select",
       "items": {
         "type": "string",
         "enum": [
-          "COURSE",
-          "SPECIALIZATION",
-          "PROFESSIONAL_CERTIFICATE",
-          "GUIDED_PROJECT",
-          "PROJECT",
-          "DEGREE",
-          "MASTERTRACK"
-        ],
-        "enumTitles": [
-          "Course",
-          "Specialization",
-          "Professional Certificate",
-          "Guided Project",
-          "Project",
-          "Degree",
-          "MasterTrack"
+          "beginner",
+          "intermediate",
+          "advanced",
+          "mixed"
         ]
-      }
-    },
-    "difficulties": {
-      "title": "Difficulty levels",
-      "type": "array",
-      "description": "Optional difficulty filter.",
-      "editor": "select",
+      },
       "default": [],
-      "items": {
-        "type": "string",
-        "enum": ["BEGINNER", "INTERMEDIATE", "ADVANCED", "MIXED"],
-        "enumTitles": ["Beginner", "Intermediate", "Advanced", "Mixed"]
-      }
+      "description": "Optional review criterion; missing difficulty remains unknown."
     },
-    "includeSkills": {
-      "title": "Include skills",
-      "type": "boolean",
-      "description": "Include Coursera skill tags when present.",
-      "editor": "checkbox",
-      "default": true
+    "budgetUsd": {
+      "title": "Entered per-learner learning budget — USD",
+      "type": "number",
+      "editor": "number",
+      "minimum": 0,
+      "maximum": 1000000,
+      "description": "Optional. Evaluated only for complete US/USD standard quotes with explicit billing, price-scope, tax basis and additional fees. Not a live price or team-license estimate."
     },
-    "proxyConfiguration": {
-      "title": "Proxy configuration",
-      "type": "object",
-      "description": "Optional Apify proxy settings.",
-      "editor": "proxy",
-      "default": {
-        "useApifyProxy": false
-      }
+    "maximumStudyHours": {
+      "title": "Maximum supplied study hours",
+      "type": "number",
+      "editor": "number",
+      "minimum": 0.01,
+      "maximum": 10000,
+      "description": "Optional; duration labels/month buckets are never converted into hours. Not a completion-time prediction."
+    },
+    "subscriptionPeriods": {
+      "title": "Assumed subscription periods",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 36,
+      "default": 1,
+      "description": "Multiply complete subscription quotes by this entered scenario. Monthly/annual contexts stay separate; no completion/certificate guarantee. No per-course sum of catalog subscriptions."
+    },
+    "priceChangeThresholdPercent": {
+      "title": "Quoted price change threshold — %",
+      "type": "number",
+      "editor": "number",
+      "minimum": 0.01,
+      "maximum": 1000,
+      "default": 5,
+      "description": "Latest two matching supplied standard offer observations only. Zero/unknown baselines, mismatched contexts or excessive gaps do not yield numerical alerts."
+    },
+    "comparisonWindowDays": {
+      "title": "Maximum supplied comparison gap — days",
+      "type": "integer",
+      "editor": "number",
+      "minimum": 1,
+      "maximum": 3650,
+      "default": 90,
+      "description": "Reports the latest pair in each context; not cross-run state, source refresh, monitoring service or notifications."
     }
-  },
-  "required": ["queries"]
+  }
 }

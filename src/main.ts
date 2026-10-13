@@ -1,30 +1,23 @@
-import { Actor, log } from 'apify';
-import { normalizeInput, scrapeCoursera } from './routes.js';
-import type { ActorInput, ProxyUrlProvider } from './types.js';
+import { Actor } from 'apify';
+import { InputError } from './input.js';
+import { runWorkflow } from './workflow.js';
+import { COURSE_EVENT, saveConfirmedCourse } from './billing.js';
 
 await Actor.main(async () => {
-    const input = (await Actor.getInput<ActorInput>()) ?? {};
-    const options = normalizeInput(input);
-    const proxyInput = input.proxyConfiguration;
-    const proxyConfiguration = (proxyInput?.useApifyProxy || proxyInput?.proxyUrls?.length)
-        ? await Actor.createProxyConfiguration(proxyInput)
-        : undefined;
-
-    log.info('Starting Coursera courses scrape', {
-        queries: options.queries,
-        maxResults: options.maxResults,
-        productTypes: options.productTypes,
-        difficulties: options.difficulties,
-    });
-
-    const result = await scrapeCoursera(options, proxyConfiguration as ProxyUrlProvider | undefined);
-
-    if (result.records === 0 && !result.spendingLimitReached) {
-        throw new Error('No Coursera course records were scraped. Try a broader query or fewer filters.');
-    }
-
-    if (!result.spendingLimitReached) {
-        await Actor.setStatusMessage(`Finished with ${result.records} unique course(s).`);
-        log.info('Coursera scrape finished', { records: result.records });
+    const raw = (await Actor.getInput()) ?? {};
+    try {
+        await runWorkflow(raw, {
+            canSave: () => Actor.getChargingManager().calculateMaxEventChargeCountWithinLimit(COURSE_EVENT) > 0,
+            save: (record) => saveConfirmedCourse(record, { manager: Actor.getChargingManager(), push: (item, event) => Actor.pushData(item, event) }),
+            write: async (key, value, contentType) => { await Actor.setValue(key, value, contentType ? { contentType } : undefined); },
+            status: async (message) => { await Actor.setStatusMessage(message); },
+        });
+    } catch (error) {
+        if (error instanceof InputError) {
+            await Actor.setValue('RUN_STATUS', { outcome: 'invalid_input', code: error.code, message: error.message,
+                savedCourseCount: 0, courseResultEventCount: 0, upstreamRequestCount: 0, liveSourceVerified: false });
+            await Actor.setStatusMessage(error.message);
+        }
+        throw error;
     }
 });

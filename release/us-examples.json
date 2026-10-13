@@ -1,0 +1,29 @@
+{
+  "status": "LOCAL DRAFT — no tasks created or published",
+  "examples": [
+    {
+      "name": "us-course-skills-comparison-demo",
+      "title": "US Course Skills Comparison — Synthetic Preview",
+      "description": "Explore exact skill-tag gaps, supplied difficulty and study-hours evidence using invented course facts. No Coursera lookup or real course recommendations.",
+      "inputFile": "examples/us-skills-comparison.json",
+      "fixedInputFields": ["mode", "demoPreset"],
+      "visibleFields": ["requiredSkills", "targetDifficulties", "maximumStudyHours"]
+    },
+    {
+      "name": "us-learning-budget-demo",
+      "title": "US Learning Budget Review — Synthetic Preview",
+      "description": "Review invented US/USD course and subscription quotes against your entered budget. Not real tuition, a team licence, completion prediction or a price lookup.",
+      "inputFile": "examples/us-learning-budget.json",
+      "fixedInputFields": ["mode", "demoPreset"],
+      "visibleFields": ["budgetUsd", "subscriptionPeriods", "maximumStudyHours"]
+    },
+    {
+      "name": "us-course-change-review-demo",
+      "title": "US Course Catalog Change Review — Synthetic Preview",
+      "description": "Inspect invented supplied price, skill, duration and availability changes with context warnings. No live refresh, real history or automatic alerts.",
+      "inputFile": "examples/us-catalog-change-review.json",
+      "fixedInputFields": ["mode", "demoPreset"],
+      "visibleFields": ["requiredSkills", "priceChangeThresholdPercent", "comparisonWindowDays"]
+    }
+  ]
+}
